@@ -1,9 +1,0 @@
----
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHero from '../components/PageHero.astro';
-import { awards } from '../lib/content.js';
----
-<BaseLayout title="Awards">
-<PageHero eyebrow="RECOGNITION" title="Selected awards & distinctions." description="Recognition for research communication, academic performance, scholarly contribution, and early-career research."/>
-<section class="section"><div class="container"><div class="award-grid">{awards.map(a=><article class="award-card"><span class="award-year">{a.year} {a.featured ? '✳' : '·'}</span><h3>{a.title}</h3><p>{a.issuer}</p>{a.description && <p style="margin-top:0">{a.description}</p>}</article>)}</div></div></section>
-</BaseLayout>

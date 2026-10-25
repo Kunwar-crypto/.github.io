@@ -1,9 +1,0 @@
----
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHero from '../components/PageHero.astro';
-import site from '../data/site.json';
----
-<BaseLayout title="Contact">
-<PageHero eyebrow="LET'S CONNECT" title="Open to meaningful research conversations." description="For potential collaborations, research discussions, speaking invitations and academic opportunities."/>
-<section class="section"><div class="container contact-grid"><div class="contact-panel"><span class="eyebrow" style="color:#9cf0cf">GET IN TOUCH</span><h2>Let's make environmental data work harder.</h2><p>{site.collaboration_message}</p><p>Based in {site.location}.<br/>Email: <a href={`mailto:${site.email}`}>{site.email}</a></p><a class="btn btn-primary" href={`mailto:${site.email}`} style="margin-top:15px;color:#092a32;text-decoration:none">Send an email ↗</a></div><div class="social-panel"><a class="social-row" href={site.scholar} target="_blank" rel="noopener noreferrer"><strong>Google Scholar</strong><span>↗</span></a><a class="social-row" href={site.orcid} target="_blank" rel="noopener noreferrer"><strong>ORCID</strong><span>↗</span></a><a class="social-row" href={site.researchgate} target="_blank" rel="noopener noreferrer"><strong>ResearchGate</strong><span>↗</span></a><a class="social-row" href={site.linkedin} target="_blank" rel="noopener noreferrer"><strong>LinkedIn</strong><span>↗</span></a><a class="social-row" href={site.github} target="_blank" rel="noopener noreferrer"><strong>GitHub</strong><span>↗</span></a></div></div></section>
-</BaseLayout>
