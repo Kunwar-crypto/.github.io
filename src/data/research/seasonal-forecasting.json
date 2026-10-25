@@ -1,0 +1,12 @@
+{
+ "order": 3,
+ "number": "03",
+ "label": "PREDICTIVE ENVIRONMENTAL INTELLIGENCE",
+ "title": "From monitoring the present to forecasting the future",
+ "subtitle": "Seasonal forecasting · Forward-chain ML",
+ "description": "A seasonal river water-quality forecasting approach combining historical satellite indicators with hydroclimatic datasets and forecasts, evaluated under forward-chain validation and ex-post and ex-ante configurations.",
+ "methods": ["Forward-chain validation", "Seasonal forecasting", "ERA5 & C3S", "DO, EC, TSS & turbidity"],
+ "outcome": "Developed and assessed seasonal forecast capability for river water quality.",
+ "image": "",
+ "link": "https://doi.org/10.1016/j.jwpe.2026.110920"
+}

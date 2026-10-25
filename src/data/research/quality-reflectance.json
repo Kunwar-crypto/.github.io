@@ -1,0 +1,12 @@
+{
+ "order": 1,
+ "number": "01",
+ "label": "SATELLITE RETRIEVAL",
+ "title": "Clearer water signals from imperfect imagery",
+ "subtitle": "Optical water quality · Sentinel-2",
+ "description": "A statistical resampling and reflectance-quality approach for improving satellite-based estimation of total suspended solids and turbidity where clouds and shadows reduce usable observations.",
+ "methods": ["Sentinel-2 MSI", "Water reflectance", "Statistical resampling", "TSS & turbidity"],
+ "outcome": "Improved the usability of challenging satellite observations for water-quality retrieval.",
+ "image": "",
+ "link": "https://doi.org/10.1016/j.jag.2025.104681"
+}
