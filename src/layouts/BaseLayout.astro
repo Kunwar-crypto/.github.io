@@ -1,0 +1,74 @@
+---
+import '../styles/global.css';
+import site from '../data/site.json';
+const { title = '', description = site.seo_description } = Astro.props;
+const base = import.meta.env.BASE_URL || '/';
+const href = (p = '') => `${base}${String(p).replace(/^\//, '')}`;
+const pagePath = Astro.url.pathname.replace(base.replace(/\/$/, ''), '') || '/';
+const links = [
+  {name:'Home', path:''}, {name:'About', path:'about/'}, {name:'Research', path:'research/'},
+  {name:'Publications', path:'publications/'}, {name:'Experience', path:'experience/'},
+  {name:'Awards', path:'awards/'}, {name:'Contact', path:'contact/'}
+];
+const siteUrl = new URL(href(Astro.url.pathname.replace(base, '')), Astro.site || 'https://kunwar-crypto.github.io');
+const fullTitle = title ? `${title} | ${site.name}, PhD` : `${site.name}, PhD | Remote Sensing & AI Researcher`;
+const jsonLd = {
+  '@context':'https://schema.org', '@type':'Person', name:`${site.name}, ${site.credentials}`,
+  description:site.seo_description, image:new URL(href('assets/portrait.webp'),Astro.site || 'https://kunwar-crypto.github.io').toString(),
+  email:`mailto:${site.email}`, alumniOf:[{ '@type':'CollegeOrUniversity', name:site.affiliation_1},{ '@type':'CollegeOrUniversity',name:site.affiliation_2}],
+  sameAs:[site.linkedin,site.scholar,site.researchgate,site.orcid,site.github]
+};
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#09232e" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={new URL(href('assets/portrait.webp'), Astro.site || 'https://kunwar-crypto.github.io').toString()} />
+    <link rel="canonical" href={siteUrl.toString()} />
+    <link rel="icon" href={href('assets/symbol.svg')} type="image/svg+xml" />
+    <meta name="color-scheme" content="light" />
+    <title>{fullTitle}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <a href="#main" class="skip">Skip to content</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href={href('')} aria-label={`${site.name}, homepage`}>
+          <span class="brand-mark" aria-hidden="true">K<span style="color:#81e7bb">.</span></span>
+          <span><span class="brand-name">Kunwar Abhishek Singh</span><small class="brand-caption">EARTH OBSERVATION & AI</small></span>
+        </a>
+        <nav class="main-nav" id="main-nav" aria-label="Main navigation">
+          {links.map(l => <a href={href(l.path)} aria-current={(pagePath.replace(/\/$/,'') === ('/' + l.path).replace(/\/$/,'') || (l.path === '' && pagePath === '/')) ? 'page' : undefined}>{l.name}</a>)}
+        </nav>
+        <div class="nav-right">
+          <a class="btn header-cv" href={href(site.cv_path)} target="_blank" rel="noopener">Download CV ↗</a>
+          <button type="button" class="menu-toggle" aria-label="Open navigation menu" aria-controls="main-nav" aria-expanded="false" id="menu-toggle">☰</button>
+        </div>
+      </div>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-main">
+          <div><div class="footer-name">Kunwar Abhishek Singh<span style="color:#90e5c1">.</span></div><p>Remote sensing · Artificial intelligence · Water resources</p></div>
+          <div class="footer-links"><a href={site.scholar} target="_blank" rel="noopener noreferrer">Google Scholar ↗</a><a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href={site.orcid} target="_blank" rel="noopener noreferrer">ORCID ↗</a><a href={site.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href={href('contact/')}>Contact ↗</a></div>
+        </div>
+        <div class="footer-bottom"><span>© {new Date().getFullYear()} {site.name}. All rights reserved.</span><span>Illustrative satellite background: <a href="https://earthobservatory.nasa.gov/images/8103/mississippi-river-delta" target="_blank" rel="noopener noreferrer">NASA Earth Observatory, Mississippi River Delta</a> · Not a study-site image.</span></div>
+      </div>
+    </footer>
+    <script>
+      const toggle=document.getElementById('menu-toggle');
+      const nav=document.getElementById('main-nav');
+      toggle?.addEventListener('click',()=>{ const isOpen=nav?.classList.toggle('open'); toggle.setAttribute('aria-expanded',String(Boolean(isOpen))); toggle.textContent=isOpen?'×':'☰'; });
+      nav?.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{nav.classList.remove('open');toggle?.setAttribute('aria-expanded','false');if(toggle)toggle.textContent='☰';}));
+    </script>
+    <style is:global>.skip{position:absolute;left:-9999px;top:auto}.skip:focus{left:10px;top:10px;z-index:1000;background:#fff;padding:12px;color:#08232d;border-radius:6px}</style>
+  </body>
+</html>

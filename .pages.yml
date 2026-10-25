@@ -1,0 +1,249 @@
+# Pages CMS reads this file directly from the GitHub repository root.
+# Visit https://app.pagescms.org and sign in with the account that owns the repository.
+media:
+  input: public/assets
+  output: /assets
+  rename: safe
+  categories: [image, document]
+content:
+  - name: site
+    label: Homepage, profile & links
+    type: file
+    path: src/data/site.json
+    format: json
+    fields:
+      - name: name
+        label: Full name
+        type: string
+        required: true
+      - name: credentials
+        label: Degree suffix
+        type: string
+      - name: eyebrow
+        label: Hero category label
+        type: string
+      - name: hero_title_prefix
+        label: Headline (part before highlight)
+        type: string
+      - name: hero_title_accent
+        label: Headline highlighted phrase
+        type: string
+      - name: hero_title_suffix
+        label: Headline (part after highlight)
+        type: string
+      - name: current_title
+        label: Current professional title
+        type: string
+      - name: tagline
+        label: Homepage subheading
+        type: text
+      - name: bio_short
+        label: Short biography
+        type: text
+      - name: bio_long
+        label: Full biography
+        type: text
+      - name: affiliation_1
+        label: Institution 1
+        type: string
+      - name: affiliation_2
+        label: Institution 2
+        type: string
+      - name: location
+        label: Location
+        type: string
+      - name: email
+        label: Public contact email
+        type: string
+      - name: portrait
+        label: Portrait photograph
+        type: image
+      - name: cv_path
+        label: CV PDF
+        type: file
+      - name: scholar
+        label: Google Scholar URL
+        type: string
+      - name: linkedin
+        label: LinkedIn URL
+        type: string
+      - name: researchgate
+        label: ResearchGate URL
+        type: string
+      - name: orcid
+        label: ORCID URL
+        type: string
+      - name: github
+        label: GitHub URL
+        type: string
+      - name: collaboration_message
+        label: Collaboration invitation
+        type: text
+      - name: seo_description
+        label: Search engine description
+        type: text
+  - name: publications
+    label: Publications
+    type: collection
+    path: src/data/publications
+    format: json
+    filename: "{year}-{month}-{day}-{hour}-{minute}-{second}.json"
+    view:
+      primary: title
+      fields: [title, year, category, featured]
+      sort: [year, title]
+      default:
+        sort: year
+        order: desc
+    fields:
+      - name: title
+        type: text
+        required: true
+      - name: authors
+        type: string
+      - name: journal
+        label: Journal or venue
+        type: string
+      - name: year
+        type: number
+        required: true
+      - name: volume
+        type: string
+      - name: pages
+        label: Article number or pages
+        type: string
+      - name: doi
+        label: DOI or link (full https:// URL)
+        type: string
+      - name: category
+        type: select
+        options:
+          values: [Journal article, Conference presentation, Research case study]
+      - name: featured
+        label: Feature on homepage
+        type: boolean
+      - name: theme
+        label: Research theme
+        type: string
+      - name: summary
+        type: text
+  - name: research
+    label: Research projects
+    type: collection
+    path: src/data/research
+    format: json
+    filename: "{primary}.json"
+    view:
+      primary: title
+      fields: [title, order]
+    fields:
+      - name: order
+        label: Display order
+        type: number
+      - name: number
+        label: Display number (e.g. 04)
+        type: string
+      - name: label
+        label: Short uppercase category
+        type: string
+      - name: title
+        type: string
+        required: true
+      - name: subtitle
+        type: string
+      - name: description
+        type: text
+      - name: methods
+        type: string
+        list: true
+      - name: outcome
+        type: text
+      - name: image
+        type: image
+      - name: link
+        label: Associated publication or project link
+        type: string
+  - name: experience
+    label: Teaching & experience
+    type: collection
+    path: src/data/experience
+    format: json
+    filename: "{primary}.json"
+    view:
+      primary: role
+      fields: [role, organization, period]
+    fields:
+      - name: order
+        type: number
+      - name: role
+        type: string
+        required: true
+      - name: organization
+        type: string
+      - name: period
+        type: string
+      - name: type
+        type: select
+        options:
+          values: [Teaching, Research, Service, Employment]
+      - name: description
+        type: text
+  - name: awards
+    label: Awards & recognition
+    type: collection
+    path: src/data/awards
+    format: json
+    filename: "{primary}.json"
+    view:
+      primary: title
+      fields: [title, year, issuer]
+    fields:
+      - name: year
+        type: number
+      - name: title
+        type: string
+        required: true
+      - name: issuer
+        type: string
+      - name: description
+        type: text
+      - name: featured
+        type: boolean
+  - name: news
+    label: News & updates
+    type: collection
+    path: src/data/news
+    format: json
+    filename: "{year}-{month}-{day}-{hour}-{minute}-{second}.json"
+    view:
+      primary: title
+      fields: [title, date]
+    fields:
+      - name: date
+        label: Date or year (YYYY-MM-DD / YYYY)
+        type: string
+        required: true
+      - name: title
+        type: string
+        required: true
+      - name: description
+        type: text
+      - name: link
+        label: External link (optional)
+        type: string
+  - name: education
+    label: Education timeline
+    type: file
+    path: src/data/education.json
+    format: json
+    list: true
+    fields:
+      - name: year
+        type: string
+      - name: degree
+        type: string
+        required: true
+      - name: institution
+        type: string
+      - name: detail
+        type: text
