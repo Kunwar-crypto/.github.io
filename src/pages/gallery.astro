@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+const base = import.meta.env.BASE_URL || '/';
+const href = (p = '') => `${base}${String(p).replace(/^\//, '')}`;
+const galleryFiles = import.meta.glob('../data/gallery/*.json', { eager: true, import: 'default' });
+const photos = Object.values(galleryFiles).filter(item => item?.image && item?.title).sort((a, b) => (a.order ?? 999) - (b.order ?? 999) || (b.date || '').localeCompare(a.date || ''));
+const categories = [...new Set(photos.map(photo => photo.category).filter(Boolean))].sort();
+---
+<BaseLayout title="Gallery" description="Photographs of academic milestones, research activities, field visits and conferences of Kunwar Abhishek Singh, PhD.">
+  <PageHero eyebrow="THE GALLERY" title="The journey, in moments." description="Fieldwork, conferences, academic milestones and meaningful experiences beyond publications." />
+  <section class="section"><div class="container">
+    {photos.length === 0 ? (
+      <div class="gallery-empty">
+        <div class="gallery-empty-symbol" aria-hidden="true">◎</div>
+        <h2>Photos coming soon.</h2>
+        <p>This space is ready for field visits, conferences, academic milestones and memorable moments. New photographs can be added through the website's Pages CMS dashboard.</p>
+      </div>
+    ) : (
+      <>
+        {categories.length > 1 && <div class="gallery-filters" aria-label="Filter gallery by category">
+          <button class="gallery-filter" type="button" data-gallery-filter="all" aria-pressed="true">All photos</button>
+          {categories.map(category => <button class="gallery-filter" type="button" data-gallery-filter={category} aria-pressed="false">{category}</button>)}
+        </div>}
+        <div class="gallery-grid">
+          {photos.map((photo, i) => <article class="gallery-card" data-gallery-category={photo.category || ''}>
+            <button class="gallery-image-button" type="button" aria-label={`Enlarge photo: ${photo.title}`} data-image-url={href(photo.image)} data-image-alt={photo.alt || photo.title} data-image-title={photo.title} data-image-caption={photo.caption || ''}>
+              <img src={href(photo.image)} alt={photo.alt || photo.title} loading={i < 3 ? 'eager' : 'lazy'} />
+            </button>
+            <div class="gallery-card-info"><span class="gallery-category">{photo.category || 'Academic moments'}{photo.date ? ` · ${photo.date}` : ''}</span><h3>{photo.title}</h3>{photo.caption && <p>{photo.caption}</p>}</div>
+          </article>)}
+        </div>
+        <dialog id="gallery-lightbox" class="gallery-modal" aria-labelledby="gallery-modal-title">
+          <button type="button" class="gallery-close" aria-label="Close enlarged photo">×</button>
+          <img id="gallery-modal-image" src="" alt="" />
+          <div class="gallery-modal-body"><h2 id="gallery-modal-title"></h2><p id="gallery-modal-caption"></p></div>
+        </dialog>
+      </>
+    )}
+  </div></section>
+  <script>
+    const buttons = document.querySelectorAll('[data-gallery-filter]');
+    const cards = document.querySelectorAll('[data-gallery-category]');
+    buttons.forEach(button => button.addEventListener('click', () => {
+      const category = button.getAttribute('data-gallery-filter');
+      buttons.forEach(b => b.setAttribute('aria-pressed', String(b === button)));
+      cards.forEach(card => { card.hidden = category !== 'all' && card.getAttribute('data-gallery-category') !== category; });
+    }));
+    const dialog = document.getElementById('gallery-lightbox');
+    const image = document.getElementById('gallery-modal-image');
+    const title = document.getElementById('gallery-modal-title');
+    const caption = document.getElementById('gallery-modal-caption');
+    document.querySelectorAll('[data-image-url]').forEach(button => button.addEventListener('click', () => {
+      if (!(dialog instanceof HTMLDialogElement) || !(image instanceof HTMLImageElement)) return;
+      image.src = button.getAttribute('data-image-url') || '';
+      image.alt = button.getAttribute('data-image-alt') || '';
+      if (title) title.textContent = button.getAttribute('data-image-title') || '';
+      if (caption) caption.textContent = button.getAttribute('data-image-caption') || '';
+      dialog.showModal();
+    }));
+    dialog?.querySelector('.gallery-close')?.addEventListener('click', () => dialog.close());
+    dialog?.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+  </script>
+</BaseLayout>
