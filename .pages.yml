@@ -231,6 +231,46 @@ content:
       - name: link
         label: External link (optional)
         type: string
+  - name: gallery
+    label: Photo gallery
+    type: collection
+    path: src/data/gallery
+    format: json
+    filename: "{year}-{month}-{day}-{hour}-{minute}-{second}.json"
+    exclude: [.gitkeep]
+    view:
+      primary: title
+      fields: [title, category, date, order]
+    fields:
+      - name: title
+        label: Photo title
+        type: string
+        required: true
+      - name: image
+        label: Upload photograph
+        type: image
+        required: true
+        options:
+          path: public/assets/gallery
+          extensions: [jpg, jpeg, png, webp]
+          rename: safe
+      - name: caption
+        label: Photo caption
+        type: text
+      - name: alt
+        label: Description for accessibility
+        type: string
+      - name: category
+        label: Photo category
+        type: select
+        options:
+          values: [Fieldwork & Research, Conferences, Academic Milestones, Beyond Academia]
+      - name: date
+        label: Photo date (optional)
+        type: string
+      - name: order
+        label: Display order (1, 2, 3 ...)
+        type: number
   - name: education
     label: Education timeline
     type: file
